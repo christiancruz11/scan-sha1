@@ -21,3 +21,12 @@
         msg: "SHA-1 cert found: {{ item.item.path }}"
       loop: "{{ cert_checks.results }}"
       when: item.stdout == "SHA1"
+
+    - name: Summary of Certificate SHA1 Check
+      debug:
+        msg: "Certificate: {{ item.item.path }} | Result: {{ item.stdout }}"
+      loop: "{{ cert_results.results }}"
+      when: item.item.path is defined  # Safety check
+      loop_control:
+        label: "{{ item.item.path }}" # This keeps the 'loop' output clean
+        
