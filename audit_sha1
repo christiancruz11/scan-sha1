@@ -1,0 +1,23 @@
+- name: Audit SHA-1 certificates on RHEL 7
+  hosts: rhel7
+  tasks:
+    - name: Find all certificate files
+      find:
+        paths: [/etc/pki, /etc/ssl, /opt]
+        patterns: ['*.crt', '*.pem', '*.cert']
+        recurse: yes
+      register: cert_files
+
+    - name: Check each cert for SHA-1
+      shell: >
+        openssl x509 -noout -text -in "{{ item.path }}" 2>/dev/null |
+        grep -m1 "Signature Algorithm" | grep -q sha1 && echo "SHA1" || echo "OK"
+      register: cert_checks
+      loop: "{{ cert_files.files }}"
+      changed_when: false
+
+    - name: Report SHA-1 certificates
+      debug:
+        msg: "SHA-1 cert found: {{ item.item.path }}"
+      loop: "{{ cert_checks.results }}"
+      when: item.stdout == "SHA1"
