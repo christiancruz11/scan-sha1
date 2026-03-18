@@ -3,7 +3,8 @@
   tasks:
     - name: Find all certificate files
       find:
-        paths: [/etc/pki, /etc/ssl, /opt]
+        # paths: [/etc/pki, /etc/ssl, /opt]
+        paths: [/]
         patterns: ['*.crt', '*.pem', '*.cert']
         recurse: yes
       register: cert_files
