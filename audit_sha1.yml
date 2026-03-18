@@ -25,5 +25,5 @@
     - name: Summary of Certificate SHA1 Check
       debug:
         msg: "Certificate: {{ item.item.path }} | Result: {{ item.stdout }}"
-      loop: "{{ cert_results.results }}"
+      loop: "{{ cert_checks.results }}"
 
