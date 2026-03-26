@@ -27,4 +27,6 @@
       debug:
         msg: "Certificate: {{ item.item.path }} | Result: {{ item.stdout }}"
       loop: "{{ cert_checks.results }}"
+      loop_control:
+        label: "{{ item.item.path }}"
 
